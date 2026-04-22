@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKEI — ECU Cloning & Automotive Electronics · Riga, Latvia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --panel: #161616;
+    --border: #2a2a2a;
+    --accent: #e8a020;
+    --accent2: #c0392b;
+    --text: #d0d0d0;
+    --muted: #666;
+    --white: #f0f0f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--accent);
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: #d4911c; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,160,32,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,32,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 180px);
+    line-height: 0.88;
+    color: var(--white);
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+    -webkit-text-stroke: 0px;
+  }
+
+  .hero-sub {
+    margin-top: 32px;
+    max-width: 560px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-actions {
+    margin-top: 48px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--accent);
+    padding: 16px 36px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: #d4911c; transform: translateY(-2px); }
+
+  .btn-secondary {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--white); border-color: var(--white); }
+
+  .hero-counter {
+    position: absolute;
+    right: 48px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    opacity: 0;
+    animation: fadeIn 1s 1s forwards;
+  }
+
+  .counter-item { text-align: right; }
+
+  .counter-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .counter-num span { color: var(--accent); }
+
+  .counter-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    left: 48px;
+    bottom: 80px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  .scroll-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* SECTION BASE */
+  section { padding: 120px 48px; }
+
+  .section-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 96px);
+    color: var(--white);
+    line-height: 0.95;
+    letter-spacing: 1px;
+  }
+
+  /* SERVICES */
+  .services { background: var(--dark); }
+
+  .services-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin-bottom: 80px;
+  }
+
+  .services-intro {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 440px;
+    align-self: end;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .service-card {
+    background: var(--panel);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.4s;
+  }
+
+  .service-card:hover::before { height: 100%; }
+  .service-card:hover { background: #1a1a1a; }
+
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 24px;
+    transition: color 0.3s;
+  }
+
+  .service-card:hover .service-num { color: rgba(232,160,32,0.15); }
+
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .service-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .service-tags {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    border: 1px solid rgba(232,160,32,0.3);
+    padding: 4px 10px;
+  }
+
+  /* PROCESS */
+  .process { background: var(--black); }
+
+  .process-steps {
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent), transparent);
+    opacity: 0.3;
+  }
+
+  .process-step {
+    padding: 0 32px;
+    position: relative;
+  }
+
+  .step-dot {
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    position: relative;
+    background: var(--dark);
+    transition: border-color 0.3s;
+  }
+
+  .step-dot:hover { border-color: var(--accent); }
+
+  .step-dot-inner {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+  }
+
+  .step-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .step-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* WHY */
+  .why {
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 80px;
+  }
+
+  .why-points { display: flex; flex-direction: column; gap: 0; }
+
+  .why-point {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .why-point:first-child { padding-top: 0; }
+
+  .why-icon {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    width: 32px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .why-text h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .why-text p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .why-statement {
+    position: sticky;
+    top: 100px;
+  }
+
+  .why-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 5vw, 80px);
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+
+  .why-big em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .why-quote {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 20px;
+  }
+
+  /* GEOGRAPHY */
+  .geo {
+    background: var(--dark);
+    padding: 80px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .geo-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .geo-text p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 400px;
+    line-height: 1.7;
+  }
+
+  .geo-options {
+    display: flex;
+    gap: 32px;
+  }
+
+  .geo-option {
+    text-align: center;
+    padding: 24px 32px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    transition: border-color 0.3s;
+  }
+
+  .geo-option:hover { border-color: var(--accent); }
+
+  .geo-option-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .geo-option-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .geo-option-desc {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* CONTACT */
+  .contact { background: var(--black); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 80px;
+    align-items: start;
+  }
+
+  .contact-info { display: flex; flex-direction: column; gap: 32px; }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .contact-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-value:hover { color: var(--accent); }
+
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+  .form-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-textarea { min-height: 120px; resize: vertical; }
+
+  .form-select option { background: var(--panel); }
+
+  .form-submit {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--accent);
+    border: none;
+    padding: 18px 40px;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-self: flex-start;
+  }
+
+  .form-submit:hover { background: #d4911c; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 4px;
+    text-decoration: none;
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  .footer-socials {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-socials a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-socials a:hover { color: var(--accent); }
+
+  .footer-copy {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--border);
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--accent);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-flex;
+    animation: ticker 20s linear infinite;
+  }
+
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--black);
+    padding: 0 40px;
+  }
+
+  .ticker-dot {
+    color: rgba(0,0,0,0.4);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { width: 40px; }
+    50% { width: 60px; }
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* RESPONSIVE */
+  /* CASES */
+  .cases { background: var(--black); }
+
+  .cases-intro {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 16px;
+    margin-bottom: 64px;
+    max-width: 500px;
+  }
+
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .case-card {
+    background: var(--panel);
+    overflow: hidden;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .case-card:hover { background: #1a1a1a; }
+
+  .case-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(30%);
+    transition: filter 0.3s;
+  }
+
+  .case-card:hover .case-img { filter: grayscale(0%); }
+
+  .case-img-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--border);
+    text-transform: uppercase;
+  }
+
+  .case-body { padding: 28px; }
+
+  .case-service {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .case-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .case-car {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .case-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .case-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px 80px; }
+    .hero-counter { display: none; }
+    .scroll-indicator { display: none; }
+    .services-header { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .process-steps::before { display: none; }
+    .why-grid { grid-template-columns: 1fr; gap: 48px; }
+    .why-statement { position: static; }
+    .geo { flex-direction: column; }
+    .geo-options { flex-direction: column; width: 100%; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .cases-grid { grid-template-columns: 1fr; }
+
+    .footer-socials { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">AK<span>E</span>I</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#cases">Cases</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#why">Why AKEI</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get Quote</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+
+  <div class="hero-tag">· ECU Cloning · IMMO · EEPROM/Flash · Riga, Latvia</div>
+
+  <h1>WE READ<br>WHAT OTHERS<br><em>CAN'T.</em></h1>
+
+  <p class="hero-sub">
+    Deep-level automotive electronics. ECU/TCU/BCM cloning, immobilizer bypass, EEPROM & Flash read/write. No dealers. No guesswork. Clean work with original chips.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Describe Your Case</a>
+    <a href="#services" class="btn-secondary">View Services →</a>
+  </div>
+
+  <div class="hero-counter">
+    <div class="counter-item">
+      <div class="counter-num">10<span>+</span></div>
+      <div class="counter-label">Years Experience</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num">EU<span>/</span>LV</div>
+      <div class="counter-label">Postal Service</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <div class="scroll-text">Scroll</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">ECU CLONING</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">IMMO-OFF</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">BSI / BCM / CAS</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">EEPROM READ/WRITE</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">FLASH PROGRAMMING</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">RIGA, LATVIA</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">ECU CLONING</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">IMMO-OFF</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">BSI / BCM / CAS</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">EEPROM READ/WRITE</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">FLASH PROGRAMMING</span>
+    <span class="ticker-item ticker-dot">·</span>
+    <span class="ticker-item">RIGA, LATVIA</span>
+    <span class="ticker-item ticker-dot">·</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-tag">What We Do</div>
+      <div class="section-title">SERVICES</div>
+    </div>
+    <p class="services-intro">
+      Specialised automotive electronics work. Each job is measured, diagnosed, and executed precisely — not approximated. We work with the data, not around it.
+    </p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-name">ECU / TCU Cloning</div>
+      <p class="service-desc">Full duplication of engine and transmission control units. Damaged, waterlogged, or dead unit — data is transferred to a donor with precision. No dealer re-coding required.</p>
+      <div class="service-tags">
+        <span class="tag">ECU</span>
+        <span class="tag">TCU</span>
+        <span class="tag">DSG</span>
+        <span class="tag">KTAG</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-name">IMMO & Key Systems</div>
+      <p class="service-desc">Immobilizer bypass, IMMO-off, key synchronization. CAS, EWS, BSI, BCM — we work at chip level, not through OBD shortcuts.</p>
+      <div class="service-tags">
+        <span class="tag">CAS</span>
+        <span class="tag">EWS</span>
+        <span class="tag">BSI</span>
+        <span class="tag">IMMO-OFF</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-name">EEPROM / Flash</div>
+      <p class="service-desc">Read, write, backup and restore EEPROM and Flash memory. Mileage data, VIN, configuration — extracted and rewritten accurately.</p>
+      <div class="service-tags">
+        <span class="tag">EEPROM</span>
+        <span class="tag">FLASH</span>
+        <span class="tag">READ/WRITE</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-name">Module Repair</div>
+      <p class="service-desc">Component-level repair of ECU, SRS, ABS, AdBlue and other control modules. Power drivers, CAN transceivers, gate drivers — diagnosed and replaced.</p>
+      <div class="service-tags">
+        <span class="tag">SRS</span>
+        <span class="tag">ABS</span>
+        <span class="tag">AdBlue</span>
+        <span class="tag">CAN</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-name">Autoservice Equipment</div>
+      <p class="service-desc">Calibration and electronics repair for professional workshop equipment: wheel balancers, brake testers, emission testers, alignment systems.</p>
+      <div class="service-tags">
+        <span class="tag">BALANCER</span>
+        <span class="tag">BRAKE TESTER</span>
+        <span class="tag">ALIGNER</span>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-name">Special Cases</div>
+      <p class="service-desc">Unusual configurations, rare modules, complex multi-system failures. If it has chips and it controls something — bring it. We'll assess it honestly.</p>
+      <div class="service-tags">
+        <span class="tag">ON REQUEST</span>
+        <span class="tag">ASSESSMENT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-tag">How It Works</div>
+  <div class="section-title">THE PROCESS</div>
+
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">// 01</div>
+      <div class="step-title">DESCRIBE</div>
+      <p class="step-desc">Send us your case — car model, module type, symptoms. We respond with an honest assessment and next steps.</p>
+    </div>
+
+    <div class="process-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">// 02</div>
+      <div class="step-title">SEND</div>
+      <p class="step-desc">Bring the unit to Riga or ship it by post — we work with clients across the EU. Secure packaging instructions provided.</p>
+    </div>
+
+    <div class="process-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">// 03</div>
+      <div class="step-title">MEASURE</div>
+      <p class="step-desc">We diagnose at chip level first. No guesswork. If it can be done — we confirm price and timeline before proceeding.</p>
+    </div>
+
+    <div class="process-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">// 04</div>
+      <div class="step-title">DELIVER</div>
+      <p class="step-desc">Completed unit returned. Clean. Verified. Ready to install. No surprises on the invoice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="why-grid">
+    <div class="why-points">
+      <div class="section-tag">Why Choose AKEI</div>
+      <div style="margin-bottom: 48px;">
+        <div class="section-title">NO<br>SHORTCUTS.</div>
+      </div>
+
+      <div class="why-point">
+        <div class="why-icon">→</div>
+        <div class="why-text">
+          <h4>Chip-level, not OBD-level</h4>
+          <p>We work directly with memory chips — EEPROM, Flash. Not OBD emulators or software workarounds. The data is read and written clean.</p>
+        </div>
+      </div>
+
+      <div class="why-point">
+        <div class="why-icon">→</div>
+        <div class="why-text">
+          <h4>Original components only</h4>
+          <p>No emulators. No clones of clones. Donor units contain original silicon. What goes back in your car is real hardware.</p>
+        </div>
+      </div>
+
+      <div class="why-point">
+        <div class="why-icon">→</div>
+        <div class="why-text">
+          <h4>Honest assessment first</h4>
+          <p>If a job can't be done properly — we say so upfront. We don't take money for work that ends in failure.</p>
+        </div>
+      </div>
+
+      <div class="why-point">
+        <div class="why-icon">→</div>
+        <div class="why-text">
+          <h4>EU postal service available</h4>
+          <p>Not in Latvia? No problem. We regularly work with clients who ship modules from across Europe. Safe, tracked, insured.</p>
+        </div>
+      </div>
+
+      <div class="why-point">
+        <div class="why-icon">→</div>
+        <div class="why-text">
+          <h4>Single specialist, full accountability</h4>
+          <p>Your unit doesn't pass through hands. One person handles it start to finish. That person answers for the result.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-statement">
+      <div class="why-big">MEASURED<br>FIRST.<br><em>FLASHED</em><br>RIGHT.</div>
+      <p class="why-quote">
+        Every control unit holds the history of your vehicle. We treat that data with precision and respect — because getting it wrong means the car doesn't move.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- GEO -->
+<div class="geo">
+  <div class="geo-text">
+    <h3>LOCAL OR REMOTE</h3>
+    <p>Based in Riga, Latvia. Working with clients across the EU. Your location is not a problem — your module's condition might be. Let's find out.</p>
+  </div>
+  <div class="geo-options">
+    <div class="geo-option">
+      <div class="geo-option-icon">📍</div>
+      <div class="geo-option-title">In Person</div>
+      <div class="geo-option-desc">Riga, Latvia</div>
+    </div>
+    <div class="geo-option">
+      <div class="geo-option-icon">📦</div>
+      <div class="geo-option-title">By Post</div>
+      <div class="geo-option-desc">EU-wide shipping</div>
+    </div>
+  </div>
+</div>
+
+<!-- CASES -->
+<section class="cases" id="cases">
+  <div class="section-tag">Our Work</div>
+  <div class="section-title">CASES</div>
+  <p class="cases-intro">Real jobs. Real results. Each case is a problem solved at chip level.</p>
+  <div class="cases-grid" id="cases-grid">
+    <!-- Cases loaded by JavaScript -->
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-tag">Get In Touch</div>
+  <div class="section-title">DESCRIBE<br>YOUR CASE</div>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-item">
+        <span class="contact-label">Phone</span>
+        <a href="tel:+37129760588" class="contact-value" data-field="phone">+371 29 760 588</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <a href="mailto:info@akei.lv" class="contact-value" data-field="email">info@akei.lv</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Location</span>
+        <span class="contact-value">Riga, Latvia</span>
+      </div>
+      <div style="display: flex; gap: 16px; margin-top: 8px;">
+        <a href="https://www.facebook.com/akei.electronics" target="_blank" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">Facebook</a>
+        <a href="https://www.instagram.com/akei_elektronikas_remonts/" target="_blank" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">Instagram</a>
+        <a href="https://www.youtube.com/channel/UC8C4ZayyIe6HSOHOjYQnAtA/featured" target="_blank" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">YouTube</a>
+      </div>
+    </div>
+
+    <form class="contact-form" action="https://formspree.io/f/xqewdver" method="POST" id="contact-form">
+      <input type="hidden" name="_subject" value="New request from akei.lv">
+      <input type="text" name="_gotcha" style="display:none">
+      <input type="hidden" name="_subject" value="New request from akei.lv">
+      <p style="display:none"><input name="_gotcha"></p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" name="name" class="form-input" placeholder="Andris" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone / Email</label>
+          <input type="text" name="contact" class="form-input" placeholder="+371 ..." required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service Type</label>
+        <select name="service" class="form-select" required>
+          <option value="">Select service...</option>
+          <option>ECU / TCU Cloning</option>
+          <option>IMMO / Key Systems</option>
+          <option>EEPROM / Flash</option>
+          <option>Module Repair</option>
+          <option>Autoservice Equipment</option>
+          <option>Other / Special Case</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Vehicle & Problem Description</label>
+        <textarea name="message" class="form-textarea" placeholder="Car make, model, year. Module type. What happened and what symptoms you see..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Description →</button>
+    </form>
+    <div id="form-success" style="display:none; padding:32px; border:1px solid var(--accent); margin-top:20px;">
+      <p style="font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:2px; color:var(--accent); text-transform:uppercase;">// MESSAGE SENT</p>
+      <p style="margin-top:12px; color:var(--muted);">We received your request and will get back to you shortly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">AK<span>E</span>I</a>
+  <div class="footer-socials">
+    <a href="https://www.facebook.com/akei.electronics" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com/akei_elektronikas_remonts/" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/channel/UC8C4ZayyIe6HSOHOjYQnAtA/featured" target="_blank">YouTube</a>
+    <a href="https://lv.linkedin.com/in/andris-kalvans-899914134" target="_blank">LinkedIn</a>
+  </div>
+  <div class="footer-copy">© 2025 AKEI · Riga, Latvia</div>
+</footer>
+
+<script>
+// Load cases from JSON files
+async function loadCases() {
+  const grid = document.getElementById('cases-grid');
+  try {
+    // Try to load cases index
+    const res = await fetch('/_data/cases/');
+    // Fallback: load known files directly
+  } catch(e) {}
+
+  // Load individual case files listed in cases-index.json
+  try {
+    const indexRes = await fetch('/_data/cases-index.json');
+    if (!indexRes.ok) return;
+    const files = await indexRes.json();
+    const cases = [];
+    for (const file of files) {
+      try {
+        const r = await fetch('/_data/cases/' + file);
+        if (r.ok) cases.push(await r.json());
+      } catch(e) {}
+    }
+    renderCases(cases.filter(c => c.published !== false));
+  } catch(e) {}
+}
+
+function renderCases(cases) {
+  const grid = document.getElementById('cases-grid');
+  if (!cases.length) {
+    grid.innerHTML = '<div style="padding:48px;color:var(--muted);font-family:\'Share Tech Mono\',monospace;font-size:12px;letter-spacing:2px;">NO CASES YET</div>';
+    return;
+  }
+  grid.innerHTML = cases.map(c => `
+    <article class="case-card">
+      ${c.image
+        ? `<img class="case-img" src="${c.image}" alt="${c.image_alt || c.title}">`
+        : `<div class="case-img-placeholder">// no photo</div>`
+      }
+      <div class="case-body">
+        <div class="case-service">${c.service || ''}</div>
+        <h3 class="case-title">${c.title}</h3>
+        <div class="case-car">${c.car || ''}</div>
+        <p class="case-desc">${c.description || ''}</p>
+        <div class="case-tags">
+          ${(c.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+// Load site settings
+async function loadSettings() {
+  try {
+    const res = await fetch('/_data/settings.json');
+    if (!res.ok) return;
+    const s = await res.json();
+    if (s.phone) document.querySelectorAll('[data-field="phone"]').forEach(el => el.textContent = s.phone);
+    if (s.email) document.querySelectorAll('[data-field="email"]').forEach(el => { el.textContent = s.email; el.href = 'mailto:' + s.email; });
+    if (s.seo_title) document.title = s.seo_title;
+    if (s.seo_description) {
+      let meta = document.querySelector('meta[name="description"]');
+      if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
+      meta.content = s.seo_description;
+    }
+  } catch(e) {}
+}
+
+// Formspree form handler
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = contactForm.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        contactForm.style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } else {
+        btn.textContent = 'Error. Try again →';
+        btn.disabled = false;
+      }
+    } catch(e) {
+      btn.textContent = 'Error. Try again →';
+      btn.disabled = false;
+    }
+  });
+}
+
+loadSettings();
+loadCases();
+</script>
+</body>
+</html>

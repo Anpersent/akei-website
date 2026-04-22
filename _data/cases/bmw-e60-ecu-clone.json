@@ -1,0 +1,12 @@
+{
+  "title": "ECU Clone — BMW E60 525d",
+  "car": "BMW E60 525d 2006",
+  "service": "ECU / TCU Cloning",
+  "description": "Customer brought a waterlogged ECU from a BMW E60 525d. The original unit was beyond repair due to corrosion on the main processor board. We performed a full chip-level data extraction from the damaged EEPROM and Flash memory, then transferred all data to a donor ECU. No dealer re-coding was required. Car started and ran perfectly on first attempt.",
+  "tags": ["ECU", "BMW", "E60", "cloning", "KTAG", "waterlogged"],
+  "image": "",
+  "image_alt": "ECU cloning BMW E60 525d engine control unit chip level repair Riga",
+  "meta_description": "Full ECU clone for BMW E60 525d with waterlogged unit. Chip-level data extraction and transfer to donor ECU. No dealer coding required. AKEI, Riga.",
+  "date": "2025-03-15",
+  "published": true
+}
