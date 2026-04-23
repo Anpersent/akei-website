@@ -1186,8 +1186,10 @@
       </div>
     </div>
 
-    <form class="contact-form" action="https://formspree.io/f/xqewdver" method="POST" id="contact-form">
-      <input type="hidden" name="_subject" value="New request from akei.lv">
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" id="contact-form">
+      <input type="hidden" name="access_key" value="e146650d-e974-459f-8f06-a7806ae5b680">
+      <input type="hidden" name="subject" value="New request from akei.lv">
+      <input type="hidden" name="redirect" value="false">
       <input type="hidden" name="_subject" value="New request from akei.lv">
       <p style="display:none"><input name="_gotcha"></p>
 
@@ -1306,7 +1308,7 @@ async function loadSettings() {
   } catch(e) {}
 }
 
-// Formspree form handler
+// Web3Forms handler
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
   contactForm.addEventListener('submit', async function(e) {
@@ -1315,12 +1317,13 @@ if (contactForm) {
     btn.textContent = 'Sending...';
     btn.disabled = true;
     try {
-      const res = await fetch(contactForm.action, {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: new FormData(contactForm),
         headers: { 'Accept': 'application/json' }
       });
-      if (res.ok) {
+      const data = await res.json();
+      if (data.success) {
         contactForm.style.display = 'none';
         document.getElementById('form-success').style.display = 'block';
       } else {
