@@ -2,8 +2,7 @@ backend:
   name: github
   repo: Anpersent/akei-website
   branch: main
-  auth_type: implicit
-  app_id: Ov23liLCn92AWpqZQFig
+  base_url: https://oauth-provider.andruha77.workers.dev
 
 media_folder: "static/images"
 public_folder: "/static/images"
