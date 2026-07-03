@@ -2,7 +2,8 @@ backend:
   name: github
   repo: Anpersent/akei-website
   branch: main
-  base_url: https://oauth-provider.andruha77.workers.dev
+  base_url: https://akei.lv
+  auth_endpoint: /api/auth
 
 media_folder: "static/images"
 public_folder: "/static/images"

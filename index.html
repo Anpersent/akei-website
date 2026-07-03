@@ -4,18 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AKEI — ECU Cloning & Automotive Electronics · Riga, Latvia</title>
+<meta name="description" content="AKEI in Riga, Latvia provides ECU cloning, immobilizer solutions, EEPROM and Flash data services, automotive electronics diagnostics and module repair.">
+<link rel="canonical" href="https://akei.lv/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://akei.lv/">
+<meta property="og:title" content="AKEI — ECU Cloning & Automotive Electronics · Riga, Latvia">
+<meta property="og:description" content="ECU cloning, immobilizer, EEPROM/Flash data services and automotive electronics repair in Riga, Latvia.">
+<meta property="og:site_name" content="AKEI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AKEI — ECU Cloning & Automotive Electronics">
+<meta name="twitter:description" content="Deep-level automotive electronics. ECU/TCU/BCM cloning, immobilizer and EEPROM/Flash services.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"AutoRepair","name":"AKEI","url":"https://akei.lv/","email":"info@akei.lv","areaServed":["Latvia","European Union"],"address":{"@type":"PostalAddress","addressLocality":"Riga","addressCountry":"LV"},"description":"ECU cloning, immobilizer solutions, EEPROM and Flash data services, automotive electronics diagnostics and module repair."}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --black: #0a0a0a;
     --dark: #111111;
-    --panel: #161616;
-    --border: #2a2a2a;
-    --accent: #e8a020;
+    --panel: #181818;
+    --border: #333333;
+    --accent: #f0ad2e;
     --accent2: #c0392b;
-    --text: #d0d0d0;
-    --muted: #666;
-    --white: #f0f0f0;
+    --text: #eeeeee;
+    --muted: #b8b8b8;
+    --white: #ffffff;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,6 +45,8 @@
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   /* NOISE OVERLAY */
@@ -38,7 +57,7 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 999;
-    opacity: 0.4;
+    opacity: 0.18;
   }
 
   /* NAV */
@@ -51,7 +70,7 @@
     justify-content: space-between;
     padding: 0 48px;
     height: 64px;
-    background: rgba(10,10,10,0.92);
+    background: rgba(10,10,10,0.97);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
@@ -150,9 +169,9 @@
   .hero-sub {
     margin-top: 32px;
     max-width: 560px;
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text);
     opacity: 0;
     animation: fadeUp 0.8s 0.6s forwards;
   }
@@ -296,7 +315,7 @@
   .services-intro {
     font-size: 16px;
     line-height: 1.8;
-    color: var(--muted);
+    color: var(--text);
     max-width: 440px;
     align-self: end;
   }
@@ -871,6 +890,30 @@
 
     .footer-socials { flex-wrap: wrap; justify-content: center; }
   }
+
+
+  /* AKEI v2 readability and reliability hardening */
+  a { text-underline-offset: 3px; }
+  .service-desc, .step-desc, .why-list li, .geo-text p, .case-desc, .contact-note { color: var(--text) !important; }
+  .nav-links a, .btn-secondary, .scroll-text, .counter-label, .case-car, footer, footer a { color: var(--muted) !important; }
+  .service-card, .case-card, .contact-form { border: 1px solid var(--border); box-shadow: 0 18px 60px rgba(0,0,0,0.28); }
+  .btn-primary, .form-submit, .nav-cta { font-weight: 700; }
+  .form-input, .form-select, .form-textarea { color: var(--white) !important; background: #101010 !important; }
+
+  @media (max-width: 700px) {
+    .hero h1 { font-size: clamp(56px, 17vw, 96px); line-height: 0.92; }
+    .hero-sub { font-size: 17px; line-height: 1.65; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-secondary { text-align: center; }
+    nav { height: 60px; }
+    .nav-logo { font-size: 26px; }
+  }
+
+  @media (prefers-contrast: more) {
+    :root { --text: #ffffff; --muted: #e2e2e2; --border: #5a5a5a; --accent: #ffc24a; }
+    body::before, .hero-grid { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -1180,18 +1223,15 @@
         <span class="contact-value">Riga, Latvia</span>
       </div>
       <div style="display: flex; gap: 16px; margin-top: 8px;">
-        <a href="https://www.facebook.com/akei.electronics" target="_blank" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">Facebook</a>
-        <a href="https://www.instagram.com/akei_elektronikas_remonts/" target="_blank" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">Instagram</a>
-        <a href="https://www.youtube.com/channel/UC8C4ZayyIe6HSOHOjYQnAtA/featured" target="_blank" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">YouTube</a>
+        <a href="https://www.facebook.com/akei.electronics" target="_blank" rel="noopener" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">Facebook</a>
+        <a href="https://www.instagram.com/akei_elektronikas_remonts/" target="_blank" rel="noopener" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">Instagram</a>
+        <a href="https://www.youtube.com/channel/UC8C4ZayyIe6HSOHOjYQnAtA/featured" target="_blank" rel="noopener" style="font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s;" onmouseover="this.style.color='#e8a020'" onmouseout="this.style.color='#666'">YouTube</a>
       </div>
     </div>
 
-    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" id="contact-form">
-      <input type="hidden" name="access_key" value="e146650d-e974-459f-8f06-a7806ae5b680">
-      <input type="hidden" name="subject" value="New request from akei.lv">
-      <input type="hidden" name="redirect" value="false">
-      <input type="hidden" name="_subject" value="New request from akei.lv">
-      <p style="display:none"><input name="_gotcha"></p>
+    <form class="contact-form" method="POST" action="https://formspree.io/f/xqewdver">
+      <input type="hidden" name="_subject" value="New request from AKEI website">
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
       <div class="form-row">
         <div class="form-group">
@@ -1221,10 +1261,6 @@
       </div>
       <button type="submit" class="form-submit">Send Description →</button>
     </form>
-    <div id="form-success" style="display:none; padding:32px; border:1px solid var(--accent); margin-top:20px;">
-      <p style="font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:2px; color:var(--accent); text-transform:uppercase;">// MESSAGE SENT</p>
-      <p style="margin-top:12px; color:var(--muted);">We received your request and will get back to you shortly.</p>
-    </div>
   </div>
 </section>
 
@@ -1232,10 +1268,10 @@
 <footer>
   <a href="#" class="footer-logo">AK<span>E</span>I</a>
   <div class="footer-socials">
-    <a href="https://www.facebook.com/akei.electronics" target="_blank">Facebook</a>
-    <a href="https://www.instagram.com/akei_elektronikas_remonts/" target="_blank">Instagram</a>
-    <a href="https://www.youtube.com/channel/UC8C4ZayyIe6HSOHOjYQnAtA/featured" target="_blank">YouTube</a>
-    <a href="https://lv.linkedin.com/in/andris-kalvans-899914134" target="_blank">LinkedIn</a>
+    <a href="https://www.facebook.com/akei.electronics" target="_blank" rel="noopener">Facebook</a>
+    <a href="https://www.instagram.com/akei_elektronikas_remonts/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.youtube.com/channel/UC8C4ZayyIe6HSOHOjYQnAtA/featured" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://lv.linkedin.com/in/andris-kalvans-899914134" target="_blank" rel="noopener">LinkedIn</a>
   </div>
   <div class="footer-copy">© 2025 AKEI · Riga, Latvia</div>
 </footer>
@@ -1266,6 +1302,12 @@ async function loadCases() {
   } catch(e) {}
 }
 
+function escapeHTML(value) {
+  return String(value || '').replace(/[&<>"']/g, function(ch) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  });
+}
+
 function renderCases(cases) {
   const grid = document.getElementById('cases-grid');
   if (!cases.length) {
@@ -1275,16 +1317,16 @@ function renderCases(cases) {
   grid.innerHTML = cases.map(c => `
     <article class="case-card">
       ${c.image
-        ? `<img class="case-img" src="${c.image}" alt="${c.image_alt || c.title}">`
+        ? `<img class="case-img" src="${escapeHTML(c.image)}" alt="${escapeHTML(c.image_alt || c.title)}" loading="lazy">`
         : `<div class="case-img-placeholder">// no photo</div>`
       }
       <div class="case-body">
-        <div class="case-service">${c.service || ''}</div>
-        <h3 class="case-title">${c.title}</h3>
-        <div class="case-car">${c.car || ''}</div>
-        <p class="case-desc">${c.description || ''}</p>
+        <div class="case-service">${escapeHTML(c.service)}</div>
+        <h3 class="case-title">${escapeHTML(c.title)}</h3>
+        <div class="case-car">${escapeHTML(c.car)}</div>
+        <p class="case-desc">${escapeHTML(c.description)}</p>
         <div class="case-tags">
-          ${(c.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+          ${(c.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
         </div>
       </div>
     </article>
@@ -1305,36 +1347,26 @@ async function loadSettings() {
       if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
       meta.content = s.seo_description;
     }
+    // Apply fonts
+    const bodyFont = s.font_body || 'DM Sans';
+    const headingFont = s.font_heading || 'Bebas Neue';
+    const allFonts = [...new Set([bodyFont, headingFont, 'Share Tech Mono'])];
+    const fontLink = document.createElement('link');
+    fontLink.rel = 'stylesheet';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=' +
+      allFonts.map(f => f.replace(/ /g, '+')).join('&family=') +
+      ':wght@300;400;500;700&display=swap';
+    document.head.appendChild(fontLink);
+    document.documentElement.style.setProperty('--font-body', `'${bodyFont}', sans-serif`);
+    document.documentElement.style.setProperty('--font-heading', `'${headingFont}', sans-serif`);
+    // Apply CSS variables
+    document.querySelectorAll('body, p, li, input, textarea, select, button').forEach(el => {
+      el.style.fontFamily = `'${bodyFont}', sans-serif`;
+    });
+    document.querySelectorAll('h1, h2, h3, .section-title, .hero h1, .nav-logo, .service-name, .step-title, .why-big, .case-title, .contact-value, .footer-logo, .counter-num, .geo-option-title, .geo-text h3').forEach(el => {
+      el.style.fontFamily = `'${headingFont}', sans-serif`;
+    });
   } catch(e) {}
-}
-
-// Web3Forms handler
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
-  contactForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = contactForm.querySelector('.form-submit');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: new FormData(contactForm),
-        headers: { 'Accept': 'application/json' }
-      });
-      const data = await res.json();
-      if (data.success) {
-        contactForm.style.display = 'none';
-        document.getElementById('form-success').style.display = 'block';
-      } else {
-        btn.textContent = 'Error. Try again →';
-        btn.disabled = false;
-      }
-    } catch(e) {
-      btn.textContent = 'Error. Try again →';
-      btn.disabled = false;
-    }
-  });
 }
 
 loadSettings();
