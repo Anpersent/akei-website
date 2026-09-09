@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W8SS3YZYRV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W8SS3YZYRV');
+</script>
+
 <title>AKEI — ECU Cloning & Automotive Electronics · Riga, Latvia</title>
 <meta name="description" content="AKEI in Riga, Latvia provides ECU cloning, immobilizer solutions, EEPROM and Flash data services, automotive electronics diagnostics and module repair.">
 <link rel="canonical" href="https://akei.lv/">
@@ -1368,6 +1378,21 @@ async function loadSettings() {
     });
   } catch(e) {}
 }
+
+<script>
+  // AKEI contact form -> GA4 form_submit
+  document.addEventListener('DOMContentLoaded', function () {
+    const contactForm = document.querySelector('.contact-form');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', function () {
+        gtag('event', 'form_submit', {
+          form_name: 'AKEI Contact Form'
+        });
+      });
+    }
+  });
+</script>
 
 loadSettings();
 loadCases();
