@@ -1379,20 +1379,18 @@ async function loadSettings() {
   } catch(e) {}
 }
 
-<script>
-  // AKEI contact form -> GA4 form_submit
-  document.addEventListener('DOMContentLoaded', function () {
-    const contactForm = document.querySelector('.contact-form');
+// AKEI contact form -> GA4 form_submit
+document.addEventListener('DOMContentLoaded', function () {
+  const contactForm = document.querySelector('.contact-form');
 
-    if (contactForm) {
-      contactForm.addEventListener('submit', function () {
-        gtag('event', 'form_submit', {
-          form_name: 'AKEI Contact Form'
-        });
+  if (contactForm) {
+    contactForm.addEventListener('submit', function () {
+      gtag('event', 'form_submit', {
+        form_name: 'AKEI Contact Form'
       });
-    }
-  });
-</script>
+    });
+  }
+});
 
 loadSettings();
 loadCases();
